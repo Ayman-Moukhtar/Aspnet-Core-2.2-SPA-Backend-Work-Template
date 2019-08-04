@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using WorkTemplate.Domain.Entity.ViewModels;
@@ -7,13 +6,13 @@ using WorkTemplate.Domain.Service.Services.User;
 
 namespace WorkTemplate.Presentation.Api.Controllers
 {
-    [Route("api/user")]
+    [Route("api/auth")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly Lazy<IUserService> _userService;
 
-        public UserController(
+        public AuthController(
             Lazy<IUserService> userService
             )
         {
@@ -21,19 +20,18 @@ namespace WorkTemplate.Presentation.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public int Get()
         {
             return _userService.Value.Dummy();
         }
 
-        [HttpPost("auth/login")]
+        [HttpPost("login")]
         public async Task<UserTicketViewModel> Login([FromBody]LoginViewModel model)
         {
             return await _userService.Value.LoginAsync(model);
         }
 
-        [HttpPost("auth/refresh")]
+        [HttpPost("refresh")]
         public async Task<UserTicketViewModel> Refresh([FromBody]RefreshTicketViewModel model)
         {
             return await _userService.Value.RefreshAsync(model);

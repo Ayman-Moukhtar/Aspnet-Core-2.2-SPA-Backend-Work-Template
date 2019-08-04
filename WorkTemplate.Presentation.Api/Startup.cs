@@ -108,6 +108,8 @@ namespace WorkTemplate.Presentation.Api
                 });
 
             services.AddMvc();
+            services.AddCors();
+
             services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -130,6 +132,10 @@ namespace WorkTemplate.Presentation.Api
                 app.UseHsts();
             }
 
+            app.UseCors(config =>
+            {
+                config.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials();
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
